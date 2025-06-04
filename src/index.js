@@ -24,6 +24,7 @@ const app = express();
 const server = http.createServer(app);
 
 // Setup Socket.IO
+const onlineUsers = new Map();
 const io = new Server(server, {
   cors: {
     origin: ["http://192.168.1.4:8081"],
@@ -34,6 +35,19 @@ const io = new Server(server, {
 // Socket.IO events
 io.on("connection", (socket) => {
   console.log(`User connected: ${socket.id}`);
+  // ✅ Mark user as online
+  socket.on("user-online", (userId) => {
+    onlineUsers.set(userId, socket.id);
+    console.log(`User ${userId} is ONLINE`);
+    io.emit("user-online", userId);
+  });
+
+  // ✅ Mark user as offline on manual signal
+  socket.on("user-offline", (userId) => {
+    onlineUsers.delete(userId);
+    console.log(`User ${userId} is OFFLINE`);
+    io.emit("user-offline", userId);
+  });
 
   socket.on("join_room", async (room) => {
     socket.join(room);

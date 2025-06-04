@@ -1,4 +1,5 @@
 import Chat from "../models/Chat.js";
+import Message from "../models/Message.js";
 
 export const addContact = async (req, res) => {
   const { userId1, userId2 } = req.body;
@@ -48,6 +49,7 @@ export const deleteChat = async (req, res) => {
   try {
     const { chatId } = req.params;
     await Chat.findByIdAndDelete(chatId);
+    await Message.deleteMany({ chatId });
     res.status(200).json({ message: "Chat deleted successfully" });
   } catch (error) {
     console.error("Error deleting chat:", error);
