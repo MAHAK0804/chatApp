@@ -87,7 +87,7 @@ io.on("connection", (socket) => {
 
 // Middleware
 const corsOptions = {
-  origin: ["http://192.168.1.4:8081"],
+  origin: ["http://localhost:8081"],
   credentials: true,
 };
 app.use(json());
@@ -113,5 +113,5 @@ app.use("/api", router);
 // Start server
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-  console.log(`Server is running on http://192.168.1.4:${PORT}`);
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
