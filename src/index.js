@@ -62,11 +62,11 @@ io.on("connection", (socket) => {
     const newMessage = await Message.create({ room, message, sender });
 
     const receiverUser = await User.findById(receiverId);
-    if (receiverUser?.expoPushToken) {
-      await sendPushNotification(receiverUser.expoPushToken, {
+    if (receiverUser?.fcmToken) {
+      await sendPushNotification(receiverUser.fcmToken, {
         title: "New Message",
         body: `${sender} sent you a message.`,
-        data: { room }, // optional
+        data: { room },
       });
     }
 

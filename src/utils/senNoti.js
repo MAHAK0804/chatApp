@@ -1,20 +1,19 @@
-import axios from "axios";
+import admin from "../config/firebaseAdmin.js";
 
-export const sendPushNotification = async (expoPushToken, message) => {
-  try {
-    const res = await axios.post("https://exp.host/--/api/v2/push/send", {
-      to: expoPushToken,
-      sound: "default",
+export const sendPushNotification = async (fcmToken, message) => {
+  const messagePayload = {
+    token: fcmToken,
+    notification: {
       title: message.title,
       body: message.body,
-      data: message.data || {},
-    });
+    },
+    data: message.data || {},
+  };
 
-    console.log("Notification sent:", res.data);
-  } catch (err) {
-    console.error(
-      "Error sending push notification:",
-      err.response?.data || err.message
-    );
+  try {
+    const response = await admin.messaging().send(messagePayload);
+    console.log("Push notification sent successfully:", response);
+  } catch (error) {
+    console.error("Error sending push notification:", error);
   }
 };

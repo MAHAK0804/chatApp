@@ -132,7 +132,7 @@ export const savePushToken = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    user.expoPushToken = token;
+    user.fcmToken = token;
     await user.save();
 
     res.status(200).json({ message: "Push token saved successfully" });

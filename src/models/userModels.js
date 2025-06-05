@@ -8,7 +8,7 @@ const userSchema = new mongoose.Schema({
   profileImage: { type: String, required: true },
   isMfaActive: { type: Boolean, default: false },
   twoFactorSecret: { type: String, default: "" },
-  expoPushToken: { type: String },
+  fcmToken: { type: String, default: "" },
 });
 
 export default mongoose.model("User", userSchema);
