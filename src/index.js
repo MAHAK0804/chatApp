@@ -60,8 +60,11 @@ io.on("connection", (socket) => {
 
   socket.on("send_message", async ({ room, message, sender, receiverId }) => {
     const newMessage = await Message.create({ room, message, sender });
+    console.log("sendMessage->>>>>>", newMessage);
 
     const receiverUser = await User.findById(receiverId);
+    console.log("message recevier", receiverUser);
+
     if (receiverUser?.fcmToken) {
       await sendPushNotification(receiverUser.fcmToken, {
         title: "New Message",

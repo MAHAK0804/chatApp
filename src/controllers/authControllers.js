@@ -124,9 +124,11 @@ export const verify2FA = async (req, res) => {
 
 export const savePushToken = async (req, res) => {
   const { email, token } = req.body;
+  console.log("save FCM token->", req.body);
 
   try {
     const user = await User.findOne({ email });
+    console.log("user find to save token ->>", user);
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -134,6 +136,7 @@ export const savePushToken = async (req, res) => {
 
     user.fcmToken = token;
     await user.save();
+    console.log("Push token saved successfully");
 
     res.status(200).json({ message: "Push token saved successfully" });
   } catch (err) {
