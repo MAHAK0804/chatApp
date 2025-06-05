@@ -81,23 +81,6 @@ io.on("connection", (socket) => {
     console.log(`User disconnected: ${socket.id}`);
   });
 });
-io.on("connection", (socket) => {
-  socket.on("join_video", ({ userId }) => {
-    socket.join(userId);
-  });
-
-  socket.on("offer", (data) => {
-    io.to(data.target).emit("offer", data);
-  });
-
-  socket.on("answer", (data) => {
-    io.to(data.target).emit("answer", data);
-  });
-
-  socket.on("ice-candidate", (data) => {
-    io.to(data.target).emit("ice-candidate", data);
-  });
-});
 
 // Middleware
 const corsOptions = {
