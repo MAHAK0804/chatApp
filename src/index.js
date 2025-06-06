@@ -58,28 +58,40 @@ io.on("connection", (socket) => {
     socket.emit("load_messages", messages);
   });
 
-  socket.on("send_message", async ({ room, message, sender, receiverId }) => {
-    const newMessage = await Message.create({ room, message, sender });
-    console.log("sendMessage->>>>>>", newMessage);
+  socket.on("send_message", async (payload) => {
+    try {
+      const { room, message, sender, receiverId } = payload;
+      console.log("Received payload in send_message:", payload);
 
-    const receiverUser = await User.findById(receiverId);
-    console.log("message recevier", receiverUser);
+      const newMessage = await Message.create({ room, message, sender });
+      console.log("sendMessage->>>>>>", newMessage);
 
-    if (receiverUser?.fcmToken) {
-      await sendPushNotification(receiverUser.fcmToken, {
-        title: "New Message",
-        body: `${sender} sent you a message.`,
-        data: { room },
+      // Validate ObjectId
+      if (!mongoose.Types.ObjectId.isValid(receiverId)) {
+        console.error("Invalid receiverId:", receiverId);
+        return;
+      }
+
+      const receiverUser = await User.findById(receiverId);
+      console.log("message receiver", receiverUser);
+
+      if (receiverUser?.fcmToken) {
+        await sendPushNotification(receiverUser.fcmToken, {
+          title: "New Message",
+          body: `${sender} sent you a message.`,
+          data: { room },
+        });
+      }
+
+      io.to(room.trim()).emit("receive_message", {
+        sender,
+        message,
+        timestamp: newMessage.timestamp,
       });
+    } catch (error) {
+      console.error("Error in send_message:", error);
     }
-
-    io.to(room).emit("receive_message", {
-      sender,
-      message,
-      timestamp: newMessage.timestamp,
-    });
   });
-
   socket.on("disconnect", () => {
     console.log(`User disconnected: ${socket.id}`);
   });
