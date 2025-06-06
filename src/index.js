@@ -15,6 +15,7 @@ import Message from "./models/Message.js";
 import router from "./routes/router.js";
 import User from "./models/userModels.js";
 import mongoose from "mongoose";
+import { sendPushNotification } from "./utils/senNoti.js";
 
 // Connect to MongoDB
 dbConnect();
