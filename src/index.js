@@ -84,7 +84,7 @@ io.on("connection", (socket) => {
         await sendPushNotification(receiverUser.fcmToken, {
           title: "New Message",
           body: `${senderUser.username} sent you a message.`,
-          data: message,
+          data: newMessage,
         });
       }
 
