@@ -57,6 +57,8 @@ io.on("connection", (socket) => {
 
     // Send existing messages from MongoDB
     const messages = await Message.find({ room }).sort({ timestamp: 1 });
+    console.log("Load message", messages);
+
     socket.emit("load_messages", messages);
   });
 
