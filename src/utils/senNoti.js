@@ -10,6 +10,7 @@ export const sendPushNotification = async (fcmToken, message) => {
     data: message.data || {},
   };
   console.log("sendPush noti=>>>>>>>>", messagePayload);
+  console.log("message sent");
 
   try {
     const response = await admin.messaging().send(messagePayload);
