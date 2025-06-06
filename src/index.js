@@ -14,6 +14,7 @@ import passport from "passport";
 import Message from "./models/Message.js";
 import router from "./routes/router.js";
 import User from "./models/userModels.js";
+import mongoose from "mongoose";
 
 // Connect to MongoDB
 dbConnect();
