@@ -66,6 +66,7 @@ io.on("connection", (socket) => {
 
       const newMessage = await Message.create({ room, message, sender });
       console.log("sendMessage->>>>>>", newMessage);
+      console.log("receiverId:", receiverId);
 
       // Validate ObjectId
       if (!mongoose.Types.ObjectId.isValid(receiverId)) {
