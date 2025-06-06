@@ -81,10 +81,15 @@ io.on("connection", (socket) => {
       console.log("message sent by", senderUser.username);
 
       if (receiverUser?.fcmToken) {
+        const stringifiedData = {};
+        for (const key in newMessage) {
+          stringifiedData[key] = String(newMessage[key]);
+        }
+
         await sendPushNotification(receiverUser.fcmToken, {
           title: "New Message",
           body: `${senderUser.username} sent you a message.`,
-          data: newMessage,
+          data: stringifiedData,
         });
       }
 
