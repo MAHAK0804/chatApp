@@ -77,12 +77,14 @@ io.on("connection", (socket) => {
 
       const receiverUser = await User.findById(receiverId);
       console.log("message receiver", receiverUser);
+      const senderUser = await User.findById(sender);
+      console.log("message sent by", senderUser.username);
 
       if (receiverUser?.fcmToken) {
         await sendPushNotification(receiverUser.fcmToken, {
           title: "New Message",
-          body: `${sender} sent you a message.`,
-          data: { room },
+          body: `${senderUser.username} sent you a message.`,
+          data: message,
         });
       }
 
