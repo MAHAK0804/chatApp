@@ -97,6 +97,7 @@ io.on("connection", (socket) => {
       }
 
       io.to(room.trim()).emit("receive_message", {
+        _id: newMessage._id,
         sender,
         message,
         timestamp: newMessage.timestamp,
